@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_test/features/day_6_async_network/presentation/provider/post_providers.dart';
+import 'package:riverpod_test/features/day_6_crud/presentation/provider/crud_provider.dart';
 
-class Day6PostsPage extends ConsumerWidget {
-  const Day6PostsPage({super.key});
+class Day6Screen extends ConsumerWidget {
+  const Day6Screen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final postsAsync = ref.watch(postNotifierProvider);
+    final postsAsync = ref.watch(crudProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Posts'), centerTitle: true),
@@ -29,6 +29,12 @@ class Day6PostsPage extends ConsumerWidget {
                   leading: CircleAvatar(child: Text(post.id.toString())),
                   title: Text(post.title ?? ''),
                   subtitle: Text(post.body ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      ref.read(crudProvider.notifier).deleteTodo(post.id);
+                    },
+                  ),
                 ),
               );
             },
