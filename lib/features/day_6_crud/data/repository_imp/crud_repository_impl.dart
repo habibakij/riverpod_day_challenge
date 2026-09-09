@@ -13,7 +13,7 @@ class CrudRepositoryImpl extends CrudRepository {
   }
 
   @override
-  Future<void> deletePost(int id) async {
+  Future<CrudEntity> deletePost(int id) async {
     return await _crudRemoteSource.deletePost(id);
   }
 }

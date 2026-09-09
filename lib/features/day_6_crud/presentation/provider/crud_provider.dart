@@ -33,16 +33,16 @@ class CrudNotifier extends AsyncNotifier<List<CrudEntity>> {
 
   void updateTodo(int id) {}
 
-  Future<void> deleteTodo(int id) async {
+  Future<CrudEntity> deleteTodo(int id) async {
     final previousData = state;
-
     state = AsyncLoading();
+    final response = await _crudRepository.deletePost(id);
 
-    state = await AsyncValue.guard(() async {
-      await _crudRepository.deletePost(id);
-
-      return previousData.value!.where((todo) => todo.id != id).toList();
-    });
+    // final response = await AsyncValue.guard(() async {
+    //   return previousData.value!.where((todo) => todo.id != id).toList();
+    // });
+    state = previousData;
+    return response;
   }
 }
 

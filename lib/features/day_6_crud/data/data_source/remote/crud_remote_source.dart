@@ -14,7 +14,9 @@ class CrudRemoteSource {
     return data.map((json) => CrudModel.fromJson(json)).toList();
   }
 
-  Future<void> deletePost(int id) async {
-    await dio.post("${AppConstants.deletePosts}$id");
+  Future<CrudModel> deletePost(int id) async {
+    final res = await dio.get("${AppConstants.deletePosts}$id");
+    final data = res.data as Map<String, dynamic>;
+    return CrudModel.fromJson(data);
   }
 }

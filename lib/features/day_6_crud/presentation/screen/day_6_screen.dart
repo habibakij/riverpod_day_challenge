@@ -21,7 +21,7 @@ class Day6Screen extends ConsumerWidget {
         data: (posts) {
           return ListView.builder(
             itemCount: posts.length,
-            itemBuilder: (context, index) {
+            itemBuilder: (_, index) {
               final post = posts[index];
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -31,8 +31,11 @@ class Day6Screen extends ConsumerWidget {
                   subtitle: Text(post.body ?? ''),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      ref.read(crudProvider.notifier).deleteTodo(post.id);
+                    onPressed: () async {
+                      final response = await ref.read(crudProvider.notifier).deleteTodo(post.id);
+                      if (response.id == post.id) {
+                        showSimpleAlertDialog(context, response.title, response.body);
+                      }
                     },
                   ),
                 ),
@@ -43,4 +46,32 @@ class Day6Screen extends ConsumerWidget {
       ),
     );
   }
+}
+
+void showSimpleAlertDialog(BuildContext context, String title, String message) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Delete successful"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(title, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+            SizedBox(height: 8),
+            Text(message),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }
