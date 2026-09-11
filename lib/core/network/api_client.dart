@@ -7,7 +7,7 @@ class ApiClient {
   ApiClient() {
     dio = Dio(
       BaseOptions(
-        baseUrl: AppConstants.baseUrl,
+        baseUrl: AppConstants.userBaseUrl,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         headers: {'Accept': 'application/vnd.github+json'},
